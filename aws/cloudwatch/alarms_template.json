@@ -1,0 +1,40 @@
+{
+  "Alarms": [
+    {
+      "AlarmName": "CDRO-DisasterRecoveryFailed",
+      "AlarmDescription": "Triggered when automated disaster recovery fails for an application.",
+      "Namespace": "CDRO/Orchestrator",
+      "MetricName": "cdro_recovery_failure",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "production"
+        }
+      ],
+      "Statistic": "Sum",
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 1,
+      "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+      "TreatMissingData": "notBreaching"
+    },
+    {
+      "AlarmName": "CDRO-RTOThresholdExceeded",
+      "AlarmDescription": "Triggered when disaster recovery duration exceeds target SLA (60 seconds).",
+      "Namespace": "CDRO/Orchestrator",
+      "MetricName": "cdro_recovery_duration",
+      "Dimensions": [
+        {
+          "Name": "Environment",
+          "Value": "production"
+        }
+      ],
+      "Statistic": "Maximum",
+      "Period": 60,
+      "EvaluationPeriods": 1,
+      "Threshold": 60,
+      "ComparisonOperator": "GreaterThanThreshold",
+      "TreatMissingData": "notBreaching"
+    }
+  ]
+}

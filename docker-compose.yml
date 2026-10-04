@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15-alpine
+    container_name: cdro-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cdro
+      POSTGRES_PASSWORD: cdro_password
+      POSTGRES_DB: cdro_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - cdro_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cdro -d cdro_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  demoapp:
+    build:
+      context: ./demoapp
+      dockerfile: Dockerfile
+    container_name: cdro-demoapp
+    restart: unless-stopped
+    ports:
+      - "5001:5001"
+    environment:
+      DEMOAPP_PORT: 5001
+      INTERNAL_SECRET: demoapp-internal-auth-token-48291
+      DEMOAPP_DB_PATH: /app/data/demoapp.db
+    volumes:
+      - demoapp_data:/app/data
+
+  cdro-backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: cdro-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      APP_ENV: development
+      DATABASE_URL: postgresql://cdro:cdro_password@postgres:5432/cdro_db
+      SECRET_KEY: cdro-super-secret-key-38472910-enterprise-orchestrator-key-2026
+      JWT_SECRET_KEY: cdro-jwt-secret-key-19283746-enterprise-orchestrator-key-2026
+      INTERNAL_SECRET: demoapp-internal-auth-token-48291
+      DEMOAPP_URL: http://demoapp:5001
+      HEALTH_CHECK_INTERVAL_SECONDS: 5
+      HEALTH_FAILURE_THRESHOLD: 3
+      BACKUP_INTERVAL_SECONDS: 300
+      BACKUP_RETENTION_COUNT: 10
+      RECOVERY_TIMEOUT_SECONDS: 120
+      RTO_TARGET_SECONDS: 60
+      STORAGE_BACKEND: local
+      LOCAL_BACKUP_PATH: /app/storage/backups
+      NOTIFICATION_BACKEND: console
+      RUN_BACKGROUND_WORKERS: "true"
+      FRONTEND_DIR: /app/frontend
+    volumes:
+      - cdro_storage:/app/storage/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+      demoapp:
+        condition: service_started
+
+volumes:
+  cdro_db_data:
+  demoapp_data:
+  cdro_storage:

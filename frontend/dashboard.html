@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CDRO - Disaster Recovery Console</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>Auth.requireAuth();</script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="top-header">
+    <div class="brand-section">
+      <div class="brand-logo">DR</div>
+      <div>
+        <div class="brand-title">CDRO Orchestrator</div>
+      </div>
+      <div class="brand-tagline">Autonomous Cloud Disaster Recovery</div>
+    </div>
+
+    <nav class="main-nav">
+      <a href="dashboard.html" class="active">Dashboard</a>
+      <a href="backups.html">Backups</a>
+      <a href="recoveries.html">Disaster Events</a>
+      <a href="logs.html">Audit Logs</a>
+    </nav>
+
+    <div class="header-status-section">
+      <div class="pulse-indicator">
+        <span class="pulse-dot"></span>
+        <span id="monitoring-heartbeat">LIVE FEED</span>
+      </div>
+      <div class="user-badge" id="header-user-display">
+        <!-- User info dynamically rendered -->
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="container">
+    <!-- Status Banner -->
+    <div class="status-banner">
+      <div class="banner-app-info">
+        <div>
+          <div style="font-size: 0.75rem; text-transform: uppercase; color: var(--text-muted); font-weight: 600;">Monitored Cloud Target</div>
+          <h2 style="font-size: 1.4rem; font-weight: 700;" id="app-name">DemoApp</h2>
+          <div style="font-size: 0.75rem; color: var(--text-secondary);" id="app-url">http://demoapp:5001</div>
+        </div>
+        <div id="app-status-badge" class="status-badge-lg status-HEALTHY">
+          ● HEALTHY
+        </div>
+      </div>
+
+      <!-- Autonomous DR Guarantee Badge -->
+      <div class="auto-recovery-badge-box">
+        <div class="auto-recovery-dot"></div>
+        <div class="auto-recovery-text">
+          <h4>Automatic Recovery: Active</h4>
+          <p>Autonomous failure detection & recovery enabled. No manual restore action required.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Controlled Failure Simulation Panel -->
+    <div class="simulation-panel">
+      <div class="simulation-header">
+        <span class="simulation-tag">Simulation Only — Chaos & DR Demo</span>
+        <span style="font-size: 0.75rem; color: var(--text-muted);">Controlled Failure Injection for DemoApp</span>
+      </div>
+      <p class="simulation-desc">
+        Injecting a simulated failure will cause DemoApp's health endpoint to fail. After 3 consecutive failed checks, CDRO's autonomous recovery engine will declare a disaster, verify the latest valid backup integrity, restore application data, and restore DemoApp to healthy automatically.
+      </p>
+      <div class="simulation-actions">
+        <button type="button" class="btn btn-danger" id="btn-simulate-failure" onclick="triggerSimulatedFailure()">
+          ⚡ Simulate Failure
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="triggerCorruptBackup()">
+          🧪 Corrupt Latest Backup (Test Fallback)
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="triggerImmediateBackup()">
+          💾 Trigger Backup Now
+        </button>
+        <button type="button" class="btn btn-secondary" onclick="triggerDemoReset()">
+          ↺ Reset System State
+        </button>
+      </div>
+    </div>
+
+    <!-- Metrics Cards Grid -->
+    <div class="grid-cards">
+      <!-- Card 1: System Health -->
+      <div class="card">
+        <div class="card-title">
+          <span>Health Probe</span>
+          <span id="card-health-indicator">🟢 200 OK</span>
+        </div>
+        <div class="card-value" id="health-latency">-- ms</div>
+        <div class="card-subtext" id="health-check-sub">Checked: just now (Consecutive fails: 0/3)</div>
+      </div>
+
+      <!-- Card 2: Backups -->
+      <div class="card">
+        <div class="card-title">
+          <span>Backups Available</span>
+          <span class="tag-badge badge-valid" id="card-backup-badge">VALID</span>
+        </div>
+        <div class="card-value" id="backups-count">--</div>
+        <div class="card-subtext" id="latest-backup-sub">Latest: checking...</div>
+      </div>
+
+      <!-- Card 3: Disaster Recovery SLA -->
+      <div class="card">
+        <div class="card-title">
+          <span>Recovery Time (RTO)</span>
+          <span class="tag-badge badge-valid" id="rto-status-badge">TARGET: 60s</span>
+        </div>
+        <div class="card-value" id="recovery-rto">-- s</div>
+        <div class="card-subtext" id="recovery-rpo-sub">RPO: -- min</div>
+      </div>
+
+      <!-- Card 4: Automation Status -->
+      <div class="card">
+        <div class="card-title">
+          <span>Automation Engines</span>
+          <span style="color: var(--color-cyan);">READY</span>
+        </div>
+        <div class="card-value" style="font-size: 1.1rem; gap: 0.4rem;">
+          <span class="tag-badge badge-valid">Monitor: ON</span>
+          <span class="tag-badge badge-valid">Scheduler: ON</span>
+        </div>
+        <div class="card-subtext" id="recovery-engine-status">Engine: Standby</div>
+      </div>
+    </div>
+
+    <!-- Recovery Timeline & Live Latency Chart -->
+    <div class="layout-split">
+      <!-- Recovery Timeline -->
+      <div class="timeline-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <h3 style="font-size: 1rem; font-weight: 700;">Disaster Recovery Lifecycle Timeline</h3>
+          <span style="font-size: 0.75rem; color: var(--text-muted); font-family: var(--font-mono);" id="timeline-job-id">JOB: IDLE</span>
+        </div>
+        <div class="timeline-steps" id="timeline-container">
+          <!-- Dynamic recovery steps rendered here -->
+          <div style="padding: 1rem 0; color: var(--text-muted); text-align: center;">
+            No active disaster recovery in progress. System is operating normally.
+          </div>
+        </div>
+      </div>
+
+      <!-- Response Time History Chart -->
+      <div class="card">
+        <h3 style="font-size: 1rem; font-weight: 700; margin-bottom: 0.75rem;">Health Check Latency (ms)</h3>
+        <div style="height: 220px; position: relative;">
+          <canvas id="healthLatencyChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Audit Logs Feed -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: 1rem; font-weight: 700;">Recent Disaster Recovery Events & Audit Trail</h3>
+        <a href="logs.html" style="color: var(--color-blue); text-decoration: none; font-size: 0.8rem;">View Full Log Archive →</a>
+      </div>
+      <div class="table-container">
+        <table class="ops-table">
+          <thead>
+            <tr>
+              <th>Timestamp</th>
+              <th>Severity</th>
+              <th>Event Type</th>
+              <th>Message</th>
+            </tr>
+          </thead>
+          <tbody id="recent-logs-tbody">
+            <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Loading audit records...</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script src="js/dashboard.js"></script>
+</body>
+</html>

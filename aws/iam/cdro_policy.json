@@ -1,0 +1,42 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CDROS3BackupStoragePermissions",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:ListBucket",
+        "s3:DeleteObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::cdro-backups-*",
+        "arn:aws:s3:::cdro-backups-*/*"
+      ]
+    },
+    {
+      "Sid": "CDROSNSAlertNotificationPermissions",
+      "Effect": "Allow",
+      "Action": [
+        "sns:Publish"
+      ],
+      "Resource": [
+        "arn:aws:sns:*:*:cdro-alerts-*"
+      ]
+    },
+    {
+      "Sid": "CDROCloudWatchMetricsPublishing",
+      "Effect": "Allow",
+      "Action": [
+        "cloudwatch:PutMetricData"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringEquals": {
+          "cloudwatch:namespace": "CDRO/Orchestrator"
+        }
+      }
+    }
+  ]
+}

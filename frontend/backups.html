@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CDRO - Backup Catalog</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+  <script>Auth.requireAuth();</script>
+</head>
+<body>
+  <header class="top-header">
+    <div class="brand-section">
+      <div class="brand-logo">DR</div>
+      <div class="brand-title">CDRO Orchestrator</div>
+    </div>
+    <nav class="main-nav">
+      <a href="dashboard.html">Dashboard</a>
+      <a href="backups.html" class="active">Backups</a>
+      <a href="recoveries.html">Disaster Events</a>
+      <a href="logs.html">Audit Logs</a>
+    </nav>
+    <div class="header-status-section">
+      <div class="user-badge" id="header-user-display"></div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+      <div>
+        <h2 style="font-size: 1.4rem; font-weight: 700;">Application Backups & Cryptographic Integrity</h2>
+        <p style="color: var(--text-secondary); font-size: 0.8rem;">Every backup is sealed with a SHA-256 checksum and verified prior to automated recovery.</p>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="triggerImmediateBackup()">
+          💾 Create Backup Now
+        </button>
+      </div>
+    </div>
+
+    <!-- Notice about NO manual restore -->
+    <div class="auto-recovery-badge-box" style="margin-bottom: 1.5rem; justify-content: space-between;">
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="auto-recovery-dot"></div>
+        <div class="auto-recovery-text">
+          <h4>Autonomous Recovery Architecture</h4>
+          <p>Manual restore controls are deliberately omitted. CDRO selects, verifies, and restores backups automatically upon failure detection.</p>
+        </div>
+      </div>
+      <span class="tag-badge badge-valid">POLICY: AUTOMATIC ONLY</span>
+    </div>
+
+    <div class="table-container">
+      <table class="ops-table">
+        <thead>
+          <tr>
+            <th>Backup ID</th>
+            <th>Filename</th>
+            <th>Created At</th>
+            <th>Size</th>
+            <th>SHA-256 Checksum</th>
+            <th>Storage</th>
+            <th>Status</th>
+            <th>Actions (Simulate)</th>
+          </tr>
+        </thead>
+        <tbody id="backups-tbody">
+          <tr><td colspan="8" style="text-align: center; color: var(--text-muted);">Loading backups...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script src="js/backups.js"></script>
+</body>
+</html>

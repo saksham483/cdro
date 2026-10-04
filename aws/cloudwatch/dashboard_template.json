@@ -1,0 +1,80 @@
+{
+  "widgets": [
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "CDRO/Orchestrator", "cdro_health_failure", "Environment", "production", { "color": "#d62728", "stat": "Sum" } ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Health Check Failure Rate",
+        "period": 60
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 0,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "CDRO/Orchestrator", "cdro_recovery_duration", "Environment", "production", { "color": "#1f77b4", "stat": "Average" } ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Recovery Time Objective (RTO Duration Seconds)",
+        "period": 60,
+        "yAxis": {
+          "left": {
+            "label": "Seconds",
+            "showUnits": false
+          }
+        }
+      }
+    },
+    {
+      "type": "metric",
+      "x": 0,
+      "y": 6,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "CDRO/Orchestrator", "cdro_backup_success", "Environment", "production", { "color": "#2ca02c", "stat": "Sum" } ],
+          [ "CDRO/Orchestrator", "cdro_backup_failure", "Environment", "production", { "color": "#d62728", "stat": "Sum" } ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Backup Success vs Failure Count",
+        "period": 300
+      }
+    },
+    {
+      "type": "metric",
+      "x": 12,
+      "y": 6,
+      "width": 12,
+      "height": 6,
+      "properties": {
+        "metrics": [
+          [ "CDRO/Orchestrator", "cdro_recovery_success", "Environment", "production", { "color": "#2ca02c", "stat": "Sum" } ],
+          [ "CDRO/Orchestrator", "cdro_recovery_failure", "Environment", "production", { "color": "#d62728", "stat": "Sum" } ]
+        ],
+        "view": "timeSeries",
+        "stacked": false,
+        "region": "us-east-1",
+        "title": "Automated Recovery Success vs Failure Count",
+        "period": 60
+      }
+    }
+  ]
+}
