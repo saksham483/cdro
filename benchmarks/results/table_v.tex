@@ -1,0 +1,50 @@
+% ==========================================================
+% Table V: Quantitative Recovery Performance (Publication Ready)
+% ==========================================================
+\begin{table}[htbp]
+\caption{Quantitative Recovery Performance}
+\label{tab:quant_recovery}
+\centering
+\begin{tabular}{|l|p{4.2cm}|c|}
+\hline
+\textbf{Metric} & \textbf{Measurement} & \textbf{Experimental Result} \\
+\hline
+RTO (Mean) & Disaster detection to successful recovery verification & \textbf{0.11 s} \\
+RTO (Median / P50) & 50th percentile recovery duration & 0.10 s \\
+RTO (Min / Max) & Range of recovery duration & 0.10 s / 0.15 s \\
+RTO (95th \% / P95) & 95th percentile SLA compliance & 0.15 s \\
+RTO SLA Target & SLA threshold boundary & 60 s \\
+RTO SLA Compliance Rate & Percentage meeting SLA budget & \textbf{100.0\%} \\
+RPO (Mean) & Disaster time to selected recovery-point timestamp & \textbf{2.04 s} (0.03 min) \\
+Recovery attempts & Total controlled recovery attempts & 20 \\
+Successful recoveries & Recovery attempts completed successfully & 20 \\
+Recovery success rate & Successful recoveries / total attempts & \textbf{100.0\%} \\
+Pytest cases (Total) & Automated functional & measurement test suite & 44 \\
+Passed tests & Actual pytest execution & \textbf{44 (100\%)} \\
+Failed tests & Actual pytest execution & \textbf{0} \\
+\hline
+\end{tabular}
+\end{table}
+
+% ==========================================================
+% Table: Recovery Time Objective (RTO) Sub-Phase Decomposition
+% ==========================================================
+\begin{table}[htbp]
+\caption{RTO Sub-Phase Latency Decomposition}
+\label{tab:rto_breakdown}
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Recovery Sub-Phase} & \textbf{Mean Latency (ms)} & \textbf{Share (\%)} \\
+\hline
+1. Recovery Lock Acquisition & 1.63 $\pm$ 0.20 & 18.7\% \\
+2. Candidate Discovery \& SHA-256 Hashing & 1.00 $\pm$ 0.29 & 11.5\% \\
+3. Workspace Extraction & 0.40 $\pm$ 0.01 & 4.6\% \\
+4. Database State Restoration & 4.38 $\pm$ 0.21 & 50.4\% \\
+5. Service State Reset & 0.03 $\pm$ 0.00 & 0.3\% \\
+6. Post-Recovery Verification ($3\times$ Probes + Query) & 1.26 $\pm$ 0.02 & 14.5\% \\
+\hline
+\textbf{Total End-to-End RTO} & \textbf{8.69 ms} & \textbf{100.0\%} \\
+\hline
+\end{tabular}
+\end{table}

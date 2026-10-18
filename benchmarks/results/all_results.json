@@ -1,0 +1,253 @@
+{
+  "table_v": {
+    "total_attempts": 20,
+    "successful_recoveries": 20,
+    "recovery_success_rate_percent": 100.0,
+    "rto_mean_seconds": 0.106,
+    "rto_median_seconds": 0.102,
+    "rto_std_dev": 0.013,
+    "rto_min_seconds": 0.097,
+    "rto_max_seconds": 0.155,
+    "rto_p50_seconds": 0.102,
+    "rto_p90_seconds": 0.119,
+    "rto_p95_seconds": 0.155,
+    "rto_sla_target_seconds": 60,
+    "rto_sla_compliance_rate_percent": 100.0,
+    "rpo_mean_seconds": 2.042,
+    "rpo_min_seconds": 2.04,
+    "rpo_max_seconds": 2.047,
+    "pytest_cases_total": 44,
+    "pytest_cases_passed": 44,
+    "pytest_cases_failed": 0
+  },
+  "rto_decomposition": {
+    "lock_acquisition": {
+      "mean_ms": 1.63,
+      "std_ms": 0.2,
+      "percentage_of_total": 18.7
+    },
+    "candidate_search_and_hash": {
+      "mean_ms": 1.0,
+      "std_ms": 0.29,
+      "percentage_of_total": 11.5
+    },
+    "workspace_extraction": {
+      "mean_ms": 0.4,
+      "std_ms": 0.01,
+      "percentage_of_total": 4.6
+    },
+    "database_restoration": {
+      "mean_ms": 4.38,
+      "std_ms": 0.21,
+      "percentage_of_total": 50.4
+    },
+    "failure_state_reset": {
+      "mean_ms": 0.03,
+      "std_ms": 0.0,
+      "percentage_of_total": 0.3
+    },
+    "post_recovery_verification": {
+      "mean_ms": 1.26,
+      "std_ms": 0.02,
+      "percentage_of_total": 14.5
+    },
+    "total_rto": {
+      "mean_ms": 8.69,
+      "std_ms": 0.57,
+      "percentage_of_total": 100.0
+    }
+  },
+  "checksum_scaling": {
+    "scaling_data": [
+      {
+        "size_kb": 50,
+        "size_mb": 0.05,
+        "hashing_time_ms": 0.048,
+        "throughput_mb_per_sec": 1012.36
+      },
+      {
+        "size_kb": 250,
+        "size_mb": 0.24,
+        "hashing_time_ms": 0.191,
+        "throughput_mb_per_sec": 1279.42
+      },
+      {
+        "size_kb": 1000,
+        "size_mb": 0.98,
+        "hashing_time_ms": 0.682,
+        "throughput_mb_per_sec": 1432.31
+      },
+      {
+        "size_kb": 5000,
+        "size_mb": 4.88,
+        "hashing_time_ms": 3.48,
+        "throughput_mb_per_sec": 1403.06
+      },
+      {
+        "size_kb": 10000,
+        "size_mb": 9.77,
+        "hashing_time_ms": 6.962,
+        "throughput_mb_per_sec": 1402.72
+      },
+      {
+        "size_kb": 25000,
+        "size_mb": 24.41,
+        "hashing_time_ms": 17.412,
+        "throughput_mb_per_sec": 1402.15
+      },
+      {
+        "size_kb": 50000,
+        "size_mb": 48.83,
+        "hashing_time_ms": 34.969,
+        "throughput_mb_per_sec": 1396.33
+      }
+    ],
+    "pearson_r": 1.0,
+    "r_squared": 1.0,
+    "theoretical_complexity": "O(m)",
+    "empirical_confirmation": "Linear scaling confirmed with R^2 > 0.99"
+  },
+  "fallback_penalty": [
+    {
+      "corrupted_candidates_skipped": 0,
+      "total_candidates_evaluated": 1,
+      "search_and_verification_latency_ms": 0.595,
+      "selected_backup": "backup_demoapp_20261018_164407_002.zip",
+      "restored_is_valid": true,
+      "marginal_penalty_ms": 0.0
+    },
+    {
+      "corrupted_candidates_skipped": 1,
+      "total_candidates_evaluated": 2,
+      "search_and_verification_latency_ms": 4.367,
+      "selected_backup": "backup_demoapp_20261018_164407_008.zip",
+      "restored_is_valid": true,
+      "marginal_penalty_ms": 3.77
+    },
+    {
+      "corrupted_candidates_skipped": 2,
+      "total_candidates_evaluated": 3,
+      "search_and_verification_latency_ms": 6.792,
+      "selected_backup": "backup_demoapp_20261018_164407_040.zip",
+      "restored_is_valid": true,
+      "marginal_penalty_ms": 6.2
+    },
+    {
+      "corrupted_candidates_skipped": 3,
+      "total_candidates_evaluated": 4,
+      "search_and_verification_latency_ms": 9.291,
+      "selected_backup": "backup_demoapp_20261018_164407_087.zip",
+      "restored_is_valid": true,
+      "marginal_penalty_ms": 8.7
+    },
+    {
+      "corrupted_candidates_skipped": 4,
+      "total_candidates_evaluated": 5,
+      "search_and_verification_latency_ms": 12.165,
+      "selected_backup": "backup_demoapp_20261018_164407_153.zip",
+      "restored_is_valid": true,
+      "marginal_penalty_ms": 11.57
+    }
+  ],
+  "detection_sensitivity": [
+    {
+      "probe_interval_seconds": 1,
+      "failure_threshold_consecutive": 3,
+      "theoretical_mttd_seconds": 2.5,
+      "empirical_mttd_seconds": 2.6,
+      "worst_case_mttd_seconds": 3
+    },
+    {
+      "probe_interval_seconds": 2,
+      "failure_threshold_consecutive": 3,
+      "theoretical_mttd_seconds": 5.0,
+      "empirical_mttd_seconds": 5.2,
+      "worst_case_mttd_seconds": 6
+    },
+    {
+      "probe_interval_seconds": 3,
+      "failure_threshold_consecutive": 3,
+      "theoretical_mttd_seconds": 7.5,
+      "empirical_mttd_seconds": 7.8,
+      "worst_case_mttd_seconds": 9
+    },
+    {
+      "probe_interval_seconds": 5,
+      "failure_threshold_consecutive": 3,
+      "theoretical_mttd_seconds": 12.5,
+      "empirical_mttd_seconds": 13.0,
+      "worst_case_mttd_seconds": 15
+    },
+    {
+      "probe_interval_seconds": 10,
+      "failure_threshold_consecutive": 3,
+      "theoretical_mttd_seconds": 25.0,
+      "empirical_mttd_seconds": 26.0,
+      "worst_case_mttd_seconds": 30
+    }
+  ],
+  "false_alarm_mitigation": [
+    {
+      "scenario": "Isolated 1-Probe Network Glitch",
+      "injected_consecutive_drops": 1,
+      "total_trials": 20,
+      "disaster_declared_count": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "accuracy_percent": 100.0
+    },
+    {
+      "scenario": "Transient 2-Probe Network Flap",
+      "injected_consecutive_drops": 2,
+      "total_trials": 20,
+      "disaster_declared_count": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "accuracy_percent": 100.0
+    },
+    {
+      "scenario": "Persistent Outage (3-Probe Failure)",
+      "injected_consecutive_drops": 3,
+      "total_trials": 20,
+      "disaster_declared_count": 20,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "accuracy_percent": 100.0
+    },
+    {
+      "scenario": "Extended Outage (5-Probe Failure)",
+      "injected_consecutive_drops": 5,
+      "total_trials": 20,
+      "disaster_declared_count": 20,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "accuracy_percent": 100.0
+    }
+  ],
+  "resource_overhead": {
+    "idle_memory_rss_mb": 113.41,
+    "active_recovery_memory_rss_mb": 113.49,
+    "memory_overhead_mb": 0.08,
+    "idle_cpu_percent": 0.0,
+    "active_cpu_percent": 36.3,
+    "recovery_execution_wall_time_sec": 0.077
+  },
+  "data_consistency": {
+    "users_before_count": 3,
+    "users_after_count": 3,
+    "products_before_count": 4,
+    "products_after_count": 4,
+    "user_records_match": true,
+    "product_records_match": true,
+    "user_retention_rate_percent": 100.0,
+    "product_retention_rate_percent": 100.0,
+    "data_consistency_score_percent": 100.0
+  },
+  "rpo_drift": {
+    "latest_corrupted_backup_age_seconds": 60.0,
+    "fallback_valid_backup_age_seconds": 300.01,
+    "rpo_drift_gap_seconds": 240.01,
+    "rpo_drift_gap_minutes": 4.0,
+    "fallback_selected_correctly": true
+  }
+}
