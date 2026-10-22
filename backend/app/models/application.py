@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class ApplicationStatus:
     HEALTHY = "HEALTHY"
@@ -41,9 +42,9 @@ class Application(db.Model):
             "internal_url": self.internal_url,
             "status": self.status,
             "consecutive_failures": self.consecutive_failures,
-            "last_health_check": self.last_health_check.isoformat() if self.last_health_check else None,
-            "last_successful_backup": self.last_successful_backup.isoformat() if self.last_successful_backup else None,
-            "last_recovery": self.last_recovery.isoformat() if self.last_recovery else None,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+            "last_health_check": serialize_utc(self.last_health_check),
+            "last_successful_backup": serialize_utc(self.last_successful_backup),
+            "last_recovery": serialize_utc(self.last_recovery),
+            "created_at": serialize_utc(self.created_at),
+            "updated_at": serialize_utc(self.updated_at)
         }

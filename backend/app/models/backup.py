@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class BackupStatus:
     CREATING = "CREATING"
@@ -33,5 +34,5 @@ class Backup(db.Model):
             "storage_path": self.storage_path,
             "status": self.status,
             "data_summary": self.data_summary,
-            "created_at": self.created_at.isoformat() if self.created_at else None
+            "created_at": serialize_utc(self.created_at)
         }

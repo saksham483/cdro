@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class User(db.Model):
     __tablename__ = "users"
@@ -24,5 +25,5 @@ class User(db.Model):
             "username": self.username,
             "email": self.email,
             "role": self.role,
-            "created_at": self.created_at.isoformat() if self.created_at else None
+            "created_at": serialize_utc(self.created_at)
         }

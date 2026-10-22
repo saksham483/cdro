@@ -19,7 +19,12 @@ function createToastContainer() {
 
 function formatTimestamp(isoStr) {
   if (!isoStr) return "N/A";
-  const dt = new Date(isoStr);
+  let s = String(isoStr);
+  // Timestamps without a timezone designator ("Z" or +hh:mm) come from the
+  // backend's UTC storage (SQLite drops tzinfo) — parse them as UTC, not local time.
+  if (!/(Z|[+-]\d{2}:?\d{2})$/.test(s)) s += "Z";
+  const dt = new Date(s);
+  if (isNaN(dt.getTime())) return "Invalid Date";
   return dt.toLocaleTimeString();
 }
 

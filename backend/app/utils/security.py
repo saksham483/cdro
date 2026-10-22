@@ -1,12 +1,13 @@
 from functools import wraps
 from flask import jsonify
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
-from app.models.user import User
 
 def role_required(*allowed_roles):
     def decorator(fn):
         @wraps(fn)
         def wrapper(*args, **kwargs):
+            from app.models.user import User
+
             verify_jwt_in_request()
             username = get_jwt_identity()
             user = User.query.filter_by(username=username).first()
@@ -18,3 +19,4 @@ def role_required(*allowed_roles):
             return fn(*args, **kwargs)
         return wrapper
     return decorator
+

@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class Notification(db.Model):
     __tablename__ = "notifications"
@@ -16,11 +17,11 @@ class Notification(db.Model):
     def to_dict(self):
         return {
             "id": self.id,
-            "timestamp": self.timestamp.isoformat() if self.timestamp else None,
+            "timestamp": serialize_utc(self.timestamp),
             "channel": self.channel,
             "recipient": self.recipient,
             "subject": self.subject,
             "message": self.message,
             "status": self.status,
-            "sent_at": self.sent_at.isoformat() if self.sent_at else None
+            "sent_at": serialize_utc(self.sent_at)
         }

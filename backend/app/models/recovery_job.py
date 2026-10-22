@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timezone
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class RecoveryJob(db.Model):
     __tablename__ = "recovery_jobs"
@@ -22,7 +23,7 @@ class RecoveryJob(db.Model):
             "step": step_name,
             "status": status,
             "detail": detail,
-            "timestamp": datetime.now(timezone.utc).isoformat()
+            "timestamp": serialize_utc(datetime.now(timezone.utc))
         })
         self.step_details_json = json.dumps(steps)
 
@@ -32,7 +33,7 @@ class RecoveryJob(db.Model):
             steps[-1]["status"] = status
             if detail:
                 steps[-1]["detail"] = detail
-            steps[-1]["updated_at"] = datetime.now(timezone.utc).isoformat()
+            steps[-1]["updated_at"] = serialize_utc(datetime.now(timezone.utc))
             self.step_details_json = json.dumps(steps)
 
     def to_dict(self):
@@ -44,6 +45,6 @@ class RecoveryJob(db.Model):
             "current_step": self.current_step,
             "steps": json.loads(self.step_details_json or "[]"),
             "error_message": self.error_message,
-            "started_at": self.started_at.isoformat() if self.started_at else None,
-            "completed_at": self.completed_at.isoformat() if self.completed_at else None
+            "started_at": serialize_utc(self.started_at),
+            "completed_at": serialize_utc(self.completed_at)
         }

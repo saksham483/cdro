@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class SystemSetting(db.Model):
     __tablename__ = "system_settings"
@@ -16,5 +17,5 @@ class SystemSetting(db.Model):
             "key": self.key,
             "value": self.value,
             "description": self.description,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+            "updated_at": serialize_utc(self.updated_at)
         }

@@ -14,9 +14,11 @@ class Config:
 
     # Database
     db_url = os.environ.get("DATABASE_URL", "sqlite:///" + os.path.join(BASE_DIR, "cdro.db"))
-    # Handle postgres:// vs postgresql:// compatibility in newer SQLAlchemy
+    # Handle postgres:// vs postgresql:// compatibility and psycopg2 driver in newer SQLAlchemy
     if db_url.startswith("postgres://"):
-        db_url = db_url.replace("postgres://", "postgresql://", 1)
+        db_url = db_url.replace("postgres://", "postgresql+psycopg2://", 1)
+    elif db_url.startswith("postgresql://") and "+psycopg" not in db_url:
+        db_url = db_url.replace("postgresql://", "postgresql+psycopg2://", 1)
     SQLALCHEMY_DATABASE_URI = db_url
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

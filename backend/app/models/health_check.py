@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class HealthCheck(db.Model):
     __tablename__ = "health_checks"
@@ -16,7 +17,7 @@ class HealthCheck(db.Model):
         return {
             "id": self.id,
             "application_id": self.application_id,
-            "timestamp": self.timestamp.isoformat() if self.timestamp else None,
+            "timestamp": serialize_utc(self.timestamp),
             "response_time_ms": round(self.response_time_ms, 2),
             "status_code": self.status_code,
             "healthy": self.healthy,

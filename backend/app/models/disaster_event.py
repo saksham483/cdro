@@ -1,5 +1,6 @@
 from datetime import datetime, timezone
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class DisasterStatus:
     DETECTED = "DETECTED"
@@ -30,11 +31,11 @@ class DisasterEvent(db.Model):
         return {
             "id": self.id,
             "application_id": self.application_id,
-            "detected_at": self.detected_at.isoformat() if self.detected_at else None,
+            "detected_at": serialize_utc(self.detected_at),
             "failure_type": self.failure_type,
             "status": self.status,
-            "recovery_started_at": self.recovery_started_at.isoformat() if self.recovery_started_at else None,
-            "recovery_completed_at": self.recovery_completed_at.isoformat() if self.recovery_completed_at else None,
+            "recovery_started_at": serialize_utc(self.recovery_started_at),
+            "recovery_completed_at": serialize_utc(self.recovery_completed_at),
             "backup_used": self.backup_used,
             "recovery_duration_seconds": round(self.recovery_duration_seconds, 2) if self.recovery_duration_seconds is not None else None,
             "rto_seconds": round(self.rto_seconds, 2) if self.rto_seconds is not None else None,

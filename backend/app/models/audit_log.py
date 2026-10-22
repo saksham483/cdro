@@ -1,6 +1,7 @@
 import json
 from datetime import datetime, timezone
 from app.extensions import db
+from app.utils.helpers import serialize_utc
 
 class AuditLog(db.Model):
     __tablename__ = "audit_logs"
@@ -23,7 +24,7 @@ class AuditLog(db.Model):
 
         return {
             "id": self.id,
-            "timestamp": self.timestamp.isoformat() if self.timestamp else None,
+            "timestamp": serialize_utc(self.timestamp),
             "application_id": self.application_id,
             "event_type": self.event_type,
             "severity": self.severity,
